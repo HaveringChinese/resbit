@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useStore } from "@/store/useStore";
+import { useNavigate } from "react-router-dom";
 
 const emotionalStates = [
   { name: "Enlightenment", color: "bg-enlightenment" },
@@ -24,7 +26,19 @@ const emotionalStates = [
 ];
 
 export function EmotionalStateSelector() {
+  const navigate = useNavigate();
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const setEmotionalState = useStore((state) => state.setEmotionalState);
+
+  const handleConfirm = () => {
+    if (selectedState) {
+      const state = emotionalStates.find((s) => s.name === selectedState);
+      if (state) {
+        setEmotionalState(state);
+        navigate("/session");
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 font-georgia">
@@ -73,6 +87,7 @@ export function EmotionalStateSelector() {
             <Button
               variant="outline"
               className="bg-white text-black hover:bg-gray-100 transition-colors"
+              onClick={handleConfirm}
             >
               Confirm
             </Button>
