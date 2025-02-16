@@ -20,24 +20,24 @@ export default {
     },
     extend: {
       colors: {
-        // Emotional state colors from top to bottom
-        enlightenment: "#4A148C", // Royal purple
-        peace: "#512DA8",
-        joy: "#5E35B1",
-        love: "#673AB7",
-        reason: "#7E57C2",
-        acceptance: "#9575CD",
-        willingness: "#B39DDB",
-        neutrality: "#D1C4E9",
-        courage: "#E8EAF6",
-        pride: "#FFD700",
-        anger: "#FF4500",
-        desire: "#FF6347",
-        fear: "#FF0000",
-        grief: "#DC143C",
-        apathy: "#B22222",
-        guilt: "#8B0000",
-        shame: "#640000", // Deep blood red
+        // Emotional state colors in spectrum order: red -> orange -> yellow -> green -> blue -> purple
+        shame: "#8B0000", // dark red
+        guilt: "#DC143C", // lighter red
+        apathy: "#FF4500", // orange-red
+        grief: "#FF6347", // orange
+        fear: "#FFA500", // lighter orange
+        desire: "#FFD700", // yellow-orange
+        anger: "#FFE4B5", // lighter yellow-orange
+        pride: "#FFFF00", // yellow
+        courage: "#9ACD32", // yellow-green
+        neutrality: "#90EE90", // light green
+        willingness: "#008000", // green
+        acceptance: "#4682B4", // blue-green
+        reason: "#40E0D0", // turquoise/light blue
+        love: "#0000FF", // blue
+        joy: "#8A2BE2", // blue-purple
+        peace: "#800080", // purple
+        enlightenment: "#E6E6FA", // light purple
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
