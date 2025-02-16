@@ -13,20 +13,35 @@ type EmotionalState = {
   color: string;
 };
 
+type AudioSettings = {
+  musicTrack: string | null;
+  transitionSound: string | null;
+  ambientEffect: string | null;
+  volume: number;
+};
+
 interface AppState {
   emotionalState: EmotionalState | null;
   activities: Activity[];
+  audioSettings: AudioSettings;
   setEmotionalState: (state: EmotionalState) => void;
   addActivity: (activity: Omit<Activity, "id">) => void;
   removeActivity: (id: string) => void;
   updateActivity: (id: string, activity: Partial<Activity>) => void;
+  updateAudioSettings: (settings: Partial<AudioSettings>) => void;
 }
 
 export const useStore = create<AppState>()(
   persist(
     (set) => ({
       emotionalState: null,
-      activities: [{ id: "1", title: "Breath-work", duration: 300 }], // 5 minutes default
+      activities: [{ id: "1", title: "Breath-work", duration: 300 }],
+      audioSettings: {
+        musicTrack: null,
+        transitionSound: null,
+        ambientEffect: null,
+        volume: 0.8,
+      },
       setEmotionalState: (state) => set({ emotionalState: state }),
       addActivity: (activity) =>
         set((state) => ({
@@ -44,6 +59,10 @@ export const useStore = create<AppState>()(
           activities: state.activities.map((a) =>
             a.id === id ? { ...a, ...activity } : a
           ),
+        })),
+      updateAudioSettings: (settings) =>
+        set((state) => ({
+          audioSettings: { ...state.audioSettings, ...settings },
         })),
     }),
     {

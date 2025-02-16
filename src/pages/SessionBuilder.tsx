@@ -2,6 +2,7 @@
 import { useStore } from "@/store/useStore";
 import { Button } from "@/components/ui/button";
 import { ActivityCard } from "@/components/ActivityCard";
+import { AudioSettings } from "@/components/AudioSettings";
 import { Settings, Menu, Play, Plus, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -34,6 +35,8 @@ const SessionBuilder = () => {
           <Menu className="h-6 w-6 text-white" />
         </Button>
       </header>
+
+      <AudioSettings />
 
       {/* Timeline */}
       <main className="max-w-2xl mx-auto p-4 space-y-4">
