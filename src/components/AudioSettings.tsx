@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Music2, Volume2 } from "lucide-react";
 import {
@@ -45,12 +44,8 @@ export function AudioSettings() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute left-1/2 -translate-x-1/2 top-20 bg-white/10 hover:bg-white/20"
-        >
-          <Music2 className="h-6 w-6 text-white" />
+        <Button variant="ghost" size="icon" className="text-white">
+          <Music2 className="h-6 w-6" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
