@@ -3,7 +3,8 @@ import { useStore } from "@/store/useStore";
 import { Button } from "@/components/ui/button";
 import { ActivityCard } from "@/components/ActivityCard";
 import { AudioSettings } from "@/components/AudioSettings";
-import { Settings, Menu, Play, Plus, Save } from "lucide-react";
+import { SettingsMenu } from "@/components/SettingsMenu";
+import { Menu, Play, Plus, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Sheet,
@@ -63,9 +64,7 @@ const SessionBuilder = () => {
     >
       {/* Header */}
       <header className="p-4 flex items-center justify-between">
-        <Button variant="ghost" size="icon">
-          <Settings className="h-6 w-6 text-white" />
-        </Button>
+        <SettingsMenu />
         <div className="text-center">
           <h1 className="text-3xl font-georgia text-white">Resbit</h1>
           <p className="text-white/80">rest for a bit!</p>
