@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Music2, Volume2 } from "lucide-react";
 import {
@@ -19,23 +20,23 @@ import { useStore } from "@/store/useStore";
 import { Label } from "@/components/ui/label";
 
 const musicTracks = [
-  { id: "peaceful", name: "Peaceful Meditation" },
-  { id: "nature", name: "Nature Sounds" },
-  { id: "piano", name: "Soft Piano" },
-  { id: "waves", name: "Ocean Waves" },
+  { id: "peaceful", name: "Peaceful Meditation", path: "/audio/music/peaceful.mp3" },
+  { id: "nature", name: "Nature Sounds", path: "/audio/music/nature.mp3" },
+  { id: "piano", name: "Soft Piano", path: "/audio/music/piano.mp3" },
+  { id: "waves", name: "Ocean Waves", path: "/audio/music/waves.mp3" },
 ];
 
 const transitionSounds = [
-  { id: "bell", name: "Meditation Bell" },
-  { id: "chime", name: "Wind Chimes" },
-  { id: "bowl", name: "Singing Bowl" },
+  { id: "bell", name: "Meditation Bell", path: "/audio/transitions/bell.mp3" },
+  { id: "chime", name: "Wind Chimes", path: "/audio/transitions/chime.mp3" },
+  { id: "bowl", name: "Singing Bowl", path: "/audio/transitions/bowl.mp3" },
 ];
 
 const ambientEffects = [
-  { id: "rain", name: "Rainfall" },
-  { id: "forest", name: "Forest" },
-  { id: "stream", name: "Stream" },
-  { id: "white-noise", name: "White Noise" },
+  { id: "rain", name: "Rainfall", path: "/audio/ambient/rain.mp3" },
+  { id: "forest", name: "Forest", path: "/audio/ambient/forest.mp3" },
+  { id: "stream", name: "Stream", path: "/audio/ambient/stream.mp3" },
+  { id: "white-noise", name: "White Noise", path: "/audio/ambient/white-noise.mp3" },
 ];
 
 export function AudioSettings() {
