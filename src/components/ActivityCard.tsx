@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Trash, ChevronUp, ChevronDown, Plus, Minus } from "lucide-react";
 
-export const ActivityCard = ({ activity }: { activity: Activity }) => {
+export const ActivityCard = ({ activity, index }: { activity: Activity; index: number }) => {
   const [isEditing, setIsEditing] = useState(false);
   const updateActivity = useStore((state) => state.updateActivity);
   const removeActivity = useStore((state) => state.removeActivity);
@@ -17,24 +17,27 @@ export const ActivityCard = ({ activity }: { activity: Activity }) => {
 
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-white">
-      {isEditing ? (
-        <Input
-          value={activity.title}
-          onChange={(e) =>
-            updateActivity(activity.id, { title: e.target.value })
-          }
-          onBlur={() => setIsEditing(false)}
-          className="bg-white/20 border-none text-white"
-          autoFocus
-        />
-      ) : (
-        <h3
-          className="text-xl font-georgia mb-2 cursor-pointer"
-          onClick={() => setIsEditing(true)}
-        >
-          {activity.title}
-        </h3>
-      )}
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-white/60 text-sm">#{index}</span>
+        {isEditing ? (
+          <Input
+            value={activity.title}
+            onChange={(e) =>
+              updateActivity(activity.id, { title: e.target.value })
+            }
+            onBlur={() => setIsEditing(false)}
+            className="bg-white/20 border-none text-white"
+            autoFocus
+          />
+        ) : (
+          <h3
+            className="text-xl font-georgia cursor-pointer"
+            onClick={() => setIsEditing(true)}
+          >
+            {activity.title}
+          </h3>
+        )}
+      </div>
 
       <div className="flex items-center gap-4 mt-4">
         <div className="flex items-center gap-2">

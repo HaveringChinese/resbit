@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { Settings } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -19,7 +19,7 @@ export function SettingsMenu() {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="text-white">
-          <ArrowLeft className="h-6 w-6" />
+          <Settings className="h-6 w-6" />
         </Button>
       </SheetTrigger>
       <SheetContent side="left">
@@ -39,7 +39,7 @@ export function SettingsMenu() {
             className="w-full"
             onClick={() => navigate("/")}
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <Settings className="mr-2 h-4 w-4" />
             Change Mood State
           </Button>
         </div>

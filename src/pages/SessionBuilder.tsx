@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const SessionBuilder = () => {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ const SessionBuilder = () => {
   const [sessionName, setSessionName] = useState("");
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const { emotionalState, activities, savedSessions, saveSession, loadSession, deleteSession } = useStore();
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
 
   // Redirect if no emotional state is selected
   if (!emotionalState) {
@@ -39,6 +41,7 @@ const SessionBuilder = () => {
   }
 
   const totalDuration = activities.reduce((acc, curr) => acc + curr.duration, 0);
+  const currentSession = savedSessions.find(s => s.id === selectedSessionId);
 
   const handleSaveSession = () => {
     if (!sessionName.trim()) {
@@ -51,6 +54,7 @@ const SessionBuilder = () => {
     }
     saveSession(sessionName.trim());
     setSessionName("");
+    setSelectedSessionId(null);
     setSaveDialogOpen(false);
     toast({
       title: "Success",
@@ -60,11 +64,14 @@ const SessionBuilder = () => {
 
   return (
     <div
-      className={`min-h-screen ${emotionalState.color} transition-colors duration-500`}
+      className={`min-h-screen ${emotionalState.color} transition-colors duration-500 flex flex-col`}
     >
       {/* Header */}
-      <header className="p-4 flex items-center justify-between">
-        <SettingsMenu />
+      <header className="p-4 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2">
+          <SettingsMenu />
+          <AudioSettings />
+        </div>
         <div className="text-center">
           <h1 className="text-3xl font-georgia text-white">Resbit</h1>
           <p className="text-white/80">rest for a bit!</p>
@@ -113,6 +120,8 @@ const SessionBuilder = () => {
                       variant="secondary"
                       onClick={() => {
                         loadSession(session.id);
+                        setSelectedSessionId(session.id);
+                        setSessionName(session.name);
                         toast({
                           title: "Session Loaded",
                           description: "Your session has been loaded successfully",
@@ -129,28 +138,36 @@ const SessionBuilder = () => {
         </Sheet>
       </header>
 
-      <AudioSettings />
-
       {/* Timeline */}
-      <main className="max-w-2xl mx-auto p-4 space-y-4">
-        {activities.map((activity) => (
-          <ActivityCard key={activity.id} activity={activity} />
-        ))}
-        
-        <Button
-          variant="outline"
-          className="w-full bg-white/10 text-white hover:bg-white/20"
-          onClick={() =>
-            useStore.getState().addActivity({ title: "New Activity", duration: 300 })
-          }
-        >
-          <Plus className="mr-2" />
-          Add Activity
-        </Button>
-      </main>
+      <div className="flex-1 overflow-hidden px-4">
+        <div className="max-w-2xl mx-auto h-full flex flex-col">
+          <Button
+            variant="outline"
+            className="w-full bg-white/10 text-white hover:bg-white/20 mb-4"
+            onClick={() =>
+              useStore.getState().addActivity({ title: "New Activity", duration: 300 })
+            }
+          >
+            <Plus className="mr-2" />
+            Add Activity
+          </Button>
+
+          <ScrollArea className="flex-1 -mx-4 px-4">
+            <div className="space-y-4 pb-32">
+              {activities.map((activity, index) => (
+                <ActivityCard 
+                  key={activity.id} 
+                  activity={activity} 
+                  index={index + 1}
+                />
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
+      </div>
 
       {/* Session Controls */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-black/20 backdrop-blur-sm p-4">
+      <footer className="shrink-0 bg-black/20 backdrop-blur-sm p-4">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div className="text-white">
             <p className="text-sm opacity-80">Total Duration</p>
@@ -174,7 +191,9 @@ const SessionBuilder = () => {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Save Session</DialogTitle>
+                  <DialogTitle>
+                    {currentSession ? 'Update Session' : 'Save New Session'}
+                  </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 mt-4">
                   <Input
@@ -182,7 +201,9 @@ const SessionBuilder = () => {
                     value={sessionName}
                     onChange={(e) => setSessionName(e.target.value)}
                   />
-                  <Button onClick={handleSaveSession}>Save Session</Button>
+                  <Button onClick={handleSaveSession}>
+                    {currentSession ? 'Update' : 'Save'} Session
+                  </Button>
                 </div>
               </DialogContent>
             </Dialog>
