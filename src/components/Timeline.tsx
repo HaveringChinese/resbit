@@ -9,7 +9,7 @@ export function Timeline() {
   const { activities } = useStore();
 
   return (
-    <div className="flex-1 overflow-hidden px-4">
+    <div className="flex-1 overflow-hidden px-2 sm:px-4">
       <div className="max-w-2xl mx-auto h-full flex flex-col">
         {/* Add Activity Button - Always visible at the top */}
         <Button
@@ -24,7 +24,7 @@ export function Timeline() {
         </Button>
 
         {/* Scrollable Activity List */}
-        <ScrollArea className="flex-1 -mx-4 px-4">
+        <ScrollArea className="flex-1 -mx-2 sm:-mx-4 px-2 sm:px-4">
           <div className="space-y-4 pb-32">
             {activities.map((activity, index) => (
               <ActivityCard 
