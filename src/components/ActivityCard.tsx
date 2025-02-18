@@ -9,6 +9,7 @@ export const ActivityCard = ({ activity, index }: { activity: Activity; index: n
   const [isEditing, setIsEditing] = useState(false);
   const updateActivity = useStore((state) => state.updateActivity);
   const removeActivity = useStore((state) => state.removeActivity);
+  const emotionalState = useStore((state) => state.emotionalState);
 
   const handleDurationChange = (change: number) => {
     const newDuration = Math.max(60, activity.duration + change);
@@ -16,9 +17,9 @@ export const ActivityCard = ({ activity, index }: { activity: Activity; index: n
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-white">
+    <div className={`${emotionalState?.color} bg-opacity-10 backdrop-blur-sm rounded-lg p-4`}>
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-white/60 text-sm">#{index}</span>
+        <span className={`text-opacity-60 text-sm ${emotionalState?.color}`}>#{index}</span>
         {isEditing ? (
           <Input
             value={activity.title}
@@ -31,7 +32,7 @@ export const ActivityCard = ({ activity, index }: { activity: Activity; index: n
           />
         ) : (
           <h3
-            className="text-xl font-georgia cursor-pointer"
+            className="text-xl font-georgia cursor-pointer text-white"
             onClick={() => setIsEditing(true)}
           >
             {activity.title}
@@ -45,10 +46,11 @@ export const ActivityCard = ({ activity, index }: { activity: Activity; index: n
             variant="ghost"
             size="icon"
             onClick={() => handleDurationChange(-60)}
+            className="text-white"
           >
             <Minus className="h-4 w-4" />
           </Button>
-          <span className="w-20 text-center">
+          <span className="w-20 text-center text-white">
             {Math.floor(activity.duration / 60)}:
             {(activity.duration % 60).toString().padStart(2, "0")}
           </span>
@@ -56,22 +58,24 @@ export const ActivityCard = ({ activity, index }: { activity: Activity; index: n
             variant="ghost"
             size="icon"
             onClick={() => handleDurationChange(60)}
+            className="text-white"
           >
             <Plus className="h-4 w-4" />
           </Button>
         </div>
 
         <div className="flex items-center gap-2 ml-auto">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="text-white">
             <ChevronUp className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="text-white">
             <ChevronDown className="h-4 w-4" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => removeActivity(activity.id)}
+            className="text-white"
           >
             <Trash className="h-4 w-4" />
           </Button>

@@ -24,19 +24,20 @@ export function SessionHeader({ onLoadSession }: SessionHeaderProps) {
 
   return (
     <header className="p-4 flex items-center justify-between shrink-0">
-      {/* Settings and Audio Controls */}
       <div className="flex items-center gap-2">
         <SettingsMenu />
         <AudioSettings />
       </div>
 
-      {/* App Title */}
       <div className="text-center">
-        <h1 className="text-3xl font-georgia text-white">Resbit</h1>
+        <img 
+          src="/lovable-uploads/28c14d2c-eba3-460d-99a5-66a4da4b9b9d.png" 
+          alt="Resbit Logo" 
+          className="h-12 w-12 mx-auto"
+        />
         <p className="text-white/80">rest for a bit!</p>
       </div>
 
-      {/* Saved Sessions Menu */}
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon">
