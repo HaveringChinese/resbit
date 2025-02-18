@@ -70,9 +70,7 @@ const PlaySession = () => {
   }, [timeRemaining, isPaused, currentActivityIndex, activities.length]);
 
   return (
-    <div
-      className={`min-h-screen ${emotionalState.color} transition-colors duration-500 flex flex-col items-center justify-center p-4`}
-    >
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
       <Button
         variant="ghost"
         size="icon"
@@ -97,7 +95,7 @@ const PlaySession = () => {
           <Button
             size="lg"
             variant="outline"
-            className="bg-white/20 text-white hover:bg-white/30 w-16 h-16 rounded-full"
+            className={`${emotionalState.color} text-white hover:opacity-90 w-16 h-16 rounded-full`}
             onClick={() => setIsPaused(!isPaused)}
           >
             {isPaused ? (
@@ -111,7 +109,7 @@ const PlaySession = () => {
             <Button
               size="lg"
               variant="outline"
-              className="bg-white/20 text-white hover:bg-white/30 w-12 h-12 rounded-full"
+              className={`${emotionalState.color} text-white hover:opacity-90 w-12 h-12 rounded-full`}
               onClick={() => {
                 setCurrentActivityIndex((prev) => prev + 1);
                 setTimeRemaining(activities[currentActivityIndex + 1].duration);
