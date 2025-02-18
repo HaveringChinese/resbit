@@ -19,7 +19,7 @@ export const ActivityCard = ({ activity, index }: { activity: Activity; index: n
   return (
     <div className={`${emotionalState?.color} bg-opacity-10 backdrop-blur-sm rounded-lg p-4`}>
       <div className="flex items-center gap-2 mb-2">
-        <span className={`text-opacity-60 text-sm ${emotionalState?.color}`}>#{index}</span>
+        <span className="text-opacity-60 text-sm text-white">#{index}</span>
         {isEditing ? (
           <Input
             value={activity.title}

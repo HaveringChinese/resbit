@@ -33,7 +33,7 @@ export function SessionHeader({ onLoadSession }: SessionHeaderProps) {
         <img 
           src="/lovable-uploads/28c14d2c-eba3-460d-99a5-66a4da4b9b9d.png" 
           alt="Resbit Logo" 
-          className="h-12 w-12 mx-auto"
+          className="h-24 w-24 md:h-36 md:w-36 mx-auto" // Made logo 3x bigger and responsive
         />
         <p className="text-white/80">rest for a bit!</p>
       </div>
