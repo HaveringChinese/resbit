@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Music2, Volume2, Play, Square } from "lucide-react";
 import {
@@ -50,7 +49,6 @@ export function AudioSettings() {
   const transitionAudioRef = useRef<HTMLAudioElement | null>(null);
   const ambientAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Create or update audio elements when selections change
   useEffect(() => {
     if (audioSettings.musicTrack) {
       const track = musicTracks.find(t => t.id === audioSettings.musicTrack);
@@ -77,7 +75,6 @@ export function AudioSettings() {
       }
     }
 
-    // Cleanup function
     return () => {
       if (musicAudioRef.current) {
         musicAudioRef.current.pause();
@@ -94,7 +91,6 @@ export function AudioSettings() {
     };
   }, [audioSettings.musicTrack, audioSettings.transitionSound, audioSettings.ambientEffect]);
 
-  // Update volume when it changes
   useEffect(() => {
     if (musicAudioRef.current) musicAudioRef.current.volume = audioSettings.volume;
     if (transitionAudioRef.current) transitionAudioRef.current.volume = audioSettings.volume;
@@ -143,9 +139,8 @@ export function AudioSettings() {
                 onValueChange={(value) =>
                   updateAudioSettings({ musicTrack: value })
                 }
-                className="flex-1"
               >
-                <SelectTrigger>
+                <SelectTrigger className="flex-1">
                   <SelectValue placeholder="Select a music track" />
                 </SelectTrigger>
                 <SelectContent>
@@ -175,9 +170,8 @@ export function AudioSettings() {
                 onValueChange={(value) =>
                   updateAudioSettings({ transitionSound: value })
                 }
-                className="flex-1"
               >
-                <SelectTrigger>
+                <SelectTrigger className="flex-1">
                   <SelectValue placeholder="Select a transition sound" />
                 </SelectTrigger>
                 <SelectContent>
@@ -207,9 +201,8 @@ export function AudioSettings() {
                 onValueChange={(value) =>
                   updateAudioSettings({ ambientEffect: value })
                 }
-                className="flex-1"
               >
-                <SelectTrigger>
+                <SelectTrigger className="flex-1">
                   <SelectValue placeholder="Select an ambient effect" />
                 </SelectTrigger>
                 <SelectContent>
