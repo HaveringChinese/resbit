@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Music2, Volume2 } from "lucide-react";
+import { Music2, Volume2, Play, Square } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { useStore } from "@/store/useStore";
 import { Label } from "@/components/ui/label";
+import { useState, useEffect, useRef } from "react";
 
 const musicTracks = [
   { id: "peaceful", name: "Peaceful Meditation", path: "/audio/music/peaceful.mp3" },
@@ -41,6 +42,86 @@ const ambientEffects = [
 
 export function AudioSettings() {
   const { audioSettings, updateAudioSettings } = useStore();
+  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+  const [isPlayingTransition, setIsPlayingTransition] = useState(false);
+  const [isPlayingAmbient, setIsPlayingAmbient] = useState(false);
+  
+  const musicAudioRef = useRef<HTMLAudioElement | null>(null);
+  const transitionAudioRef = useRef<HTMLAudioElement | null>(null);
+  const ambientAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Create or update audio elements when selections change
+  useEffect(() => {
+    if (audioSettings.musicTrack) {
+      const track = musicTracks.find(t => t.id === audioSettings.musicTrack);
+      if (track) {
+        musicAudioRef.current = new Audio(track.path);
+        musicAudioRef.current.loop = true;
+        musicAudioRef.current.volume = audioSettings.volume;
+      }
+    }
+    if (audioSettings.transitionSound) {
+      const sound = transitionSounds.find(s => s.id === audioSettings.transitionSound);
+      if (sound) {
+        transitionAudioRef.current = new Audio(sound.path);
+        transitionAudioRef.current.loop = true;
+        transitionAudioRef.current.volume = audioSettings.volume;
+      }
+    }
+    if (audioSettings.ambientEffect) {
+      const effect = ambientEffects.find(e => e.id === audioSettings.ambientEffect);
+      if (effect) {
+        ambientAudioRef.current = new Audio(effect.path);
+        ambientAudioRef.current.loop = true;
+        ambientAudioRef.current.volume = audioSettings.volume;
+      }
+    }
+
+    // Cleanup function
+    return () => {
+      if (musicAudioRef.current) {
+        musicAudioRef.current.pause();
+        musicAudioRef.current = null;
+      }
+      if (transitionAudioRef.current) {
+        transitionAudioRef.current.pause();
+        transitionAudioRef.current = null;
+      }
+      if (ambientAudioRef.current) {
+        ambientAudioRef.current.pause();
+        ambientAudioRef.current = null;
+      }
+    };
+  }, [audioSettings.musicTrack, audioSettings.transitionSound, audioSettings.ambientEffect]);
+
+  // Update volume when it changes
+  useEffect(() => {
+    if (musicAudioRef.current) musicAudioRef.current.volume = audioSettings.volume;
+    if (transitionAudioRef.current) transitionAudioRef.current.volume = audioSettings.volume;
+    if (ambientAudioRef.current) ambientAudioRef.current.volume = audioSettings.volume;
+  }, [audioSettings.volume]);
+
+  const togglePlay = (type: 'music' | 'transition' | 'ambient') => {
+    const audioRef = type === 'music' ? musicAudioRef.current :
+                    type === 'transition' ? transitionAudioRef.current :
+                    ambientAudioRef.current;
+    const setIsPlaying = type === 'music' ? setIsPlayingMusic :
+                        type === 'transition' ? setIsPlayingTransition :
+                        setIsPlayingAmbient;
+    const isPlaying = type === 'music' ? isPlayingMusic :
+                     type === 'transition' ? isPlayingTransition :
+                     isPlayingAmbient;
+
+    if (audioRef) {
+      if (isPlaying) {
+        audioRef.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.play();
+        setIsPlaying(true);
+      }
+    }
+  };
 
   return (
     <Dialog>
@@ -56,65 +137,98 @@ export function AudioSettings() {
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label>Music Track</Label>
-            <Select
-              value={audioSettings.musicTrack || ""}
-              onValueChange={(value) =>
-                updateAudioSettings({ musicTrack: value })
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a music track" />
-              </SelectTrigger>
-              <SelectContent>
-                {musicTracks.map((track) => (
-                  <SelectItem key={track.id} value={track.id}>
-                    {track.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex gap-2 items-center">
+              <Select
+                value={audioSettings.musicTrack || ""}
+                onValueChange={(value) =>
+                  updateAudioSettings({ musicTrack: value })
+                }
+                className="flex-1"
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a music track" />
+                </SelectTrigger>
+                <SelectContent>
+                  {musicTracks.map((track) => (
+                    <SelectItem key={track.id} value={track.id}>
+                      {track.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={() => togglePlay('music')}
+                disabled={!audioSettings.musicTrack}
+              >
+                {isPlayingMusic ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-2">
             <Label>Transition Sound</Label>
-            <Select
-              value={audioSettings.transitionSound || ""}
-              onValueChange={(value) =>
-                updateAudioSettings({ transitionSound: value })
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a transition sound" />
-              </SelectTrigger>
-              <SelectContent>
-                {transitionSounds.map((sound) => (
-                  <SelectItem key={sound.id} value={sound.id}>
-                    {sound.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex gap-2 items-center">
+              <Select
+                value={audioSettings.transitionSound || ""}
+                onValueChange={(value) =>
+                  updateAudioSettings({ transitionSound: value })
+                }
+                className="flex-1"
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a transition sound" />
+                </SelectTrigger>
+                <SelectContent>
+                  {transitionSounds.map((sound) => (
+                    <SelectItem key={sound.id} value={sound.id}>
+                      {sound.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={() => togglePlay('transition')}
+                disabled={!audioSettings.transitionSound}
+              >
+                {isPlayingTransition ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-2">
             <Label>Ambient Effect</Label>
-            <Select
-              value={audioSettings.ambientEffect || ""}
-              onValueChange={(value) =>
-                updateAudioSettings({ ambientEffect: value })
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select an ambient effect" />
-              </SelectTrigger>
-              <SelectContent>
-                {ambientEffects.map((effect) => (
-                  <SelectItem key={effect.id} value={effect.id}>
-                    {effect.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex gap-2 items-center">
+              <Select
+                value={audioSettings.ambientEffect || ""}
+                onValueChange={(value) =>
+                  updateAudioSettings({ ambientEffect: value })
+                }
+                className="flex-1"
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select an ambient effect" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ambientEffects.map((effect) => (
+                    <SelectItem key={effect.id} value={effect.id}>
+                      {effect.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={() => togglePlay('ambient')}
+                disabled={!audioSettings.ambientEffect}
+              >
+                {isPlayingAmbient ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-2">
